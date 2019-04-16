@@ -1,7 +1,7 @@
 package com.niaobulashi.excel.otherexcel;
 
-import com.niaobulashi.date.DateFormatUtils;
-import com.niaobulashi.date.DateUtils;
+import com.niaobulashi.util.DateFormatUtils;
+import com.niaobulashi.util.DateUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;

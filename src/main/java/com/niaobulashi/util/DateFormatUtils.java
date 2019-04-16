@@ -1,4 +1,4 @@
-package com.niaobulashi.date;
+package com.niaobulashi.util;
 
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;

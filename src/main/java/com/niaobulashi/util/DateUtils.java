@@ -1,4 +1,4 @@
-package com.niaobulashi.date;
+package com.niaobulashi.util;
 
 import java.text.DateFormat;
 import java.text.ParseException;
