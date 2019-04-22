@@ -143,7 +143,7 @@ public class TimestampUtils {
         int result=balanceDay.compareTo(lastDay);
         if (result >= 0) {
             System.out.println("balanceDay >= lastDay");
-        } else{
+        } else {
             System.out.println("balanceDay < lastDay");
         }
     }
