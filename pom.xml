@@ -141,6 +141,15 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
+
+        <!--rabbitmq start-->
+        <dependency>
+            <groupId>com.rabbitmq</groupId>
+            <artifactId>amqp-client</artifactId>
+            <version>5.0.0</version>
+        </dependency>
+        <!--rabbitmq end-->
+
     </dependencies>
 
     <build>

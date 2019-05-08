@@ -131,20 +131,6 @@ public class TimestampUtils {
     }
 
     public static void main(String[] args) {
-        System.out.println(string2Timestamp("2019-04-12 15:55:30"));
-        System.out.println(dateToString(stringToDate("2019-04-12 15:55:30", "yyyy-MM-dd")));
-        Calendar ca = Calendar.getInstance();//得到一个Calendar的实例
-        ca.setTime(new Date()); //设置时间为当前时间
-        ca.add(Calendar.DATE, -1); //天数减1
-        Date lastDay = ca.getTime(); //结果
-        Date balanceDay = stringToDate("2019-04-12 15:55:30", "yyyy-MM-dd");
-        System.out.println("lastDay:" + lastDay);
-        System.out.println("balanceDay:" + balanceDay);
-        int result=balanceDay.compareTo(lastDay);
-        if (result >= 0) {
-            System.out.println("balanceDay >= lastDay");
-        } else {
-            System.out.println("balanceDay < lastDay");
-        }
+        String str = "hello";
     }
 }
