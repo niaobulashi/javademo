@@ -7,11 +7,11 @@ import java.util.Date;
 /**
  * 日期格式化工具类
  *
- * @Author:chenssy
+ * @Author:hulang
  * @date:2016年5月26日 下午12:39:57
  *
  */
-public class DateFormatUtils {
+public class DateFormatUtil {
 	/** yyyy:年 */
 	public static final String DATE_YEAR = "yyyy";
 	
@@ -144,7 +144,7 @@ public class DateFormatUtils {
 	 * @return
 	 */
 	public static String formatDate(Date date,String format){
-		return formatDate(DateUtils.date2String(date), format);
+		return formatDate(DateUtil.date2String(date), format);
 	}
 	
 	/**
@@ -156,7 +156,7 @@ public class DateFormatUtils {
 	 * @return
 	 */
 	public static String formatDate(String value){
-		return getFormat(DATE_FORMAT2).format(DateUtils.string2Date(value, DATE_FORMAT2));
+		return getFormat(DATE_FORMAT2).format(DateUtil.string2Date(value, DATE_FORMAT2));
 	}
 	
 	/**
@@ -169,7 +169,7 @@ public class DateFormatUtils {
 	 * @return
 	 */
 	public static String formatDate(Date value){
-		return formatDate(DateUtils.date2String(value));
+		return formatDate(DateUtil.date2String(value));
 	}
 	
 	/**

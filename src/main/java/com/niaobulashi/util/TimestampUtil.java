@@ -3,10 +3,8 @@ package com.niaobulashi.util;
 import org.apache.commons.lang.StringUtils;
 
 import java.sql.Timestamp;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -16,7 +14,7 @@ import java.util.Date;
  * @date 2016-09-24
  * @since 1.0.0
  */
-public class TimestampUtils {
+public class TimestampUtil {
 
     /**
      * String转换为TimeStamp
@@ -54,7 +52,7 @@ public class TimestampUtils {
     	if(null == value){
     		return "";
     	}
-    	SimpleDateFormat sdf = DateFormatUtils.getFormat(format);
+    	SimpleDateFormat sdf = DateFormatUtil.getFormat(format);
     	
     	return sdf.format(value);
     }
@@ -101,7 +99,7 @@ public class TimestampUtils {
 
     public static String dateToString(Date d) {
         String dString = "";
-        SimpleDateFormat f = new SimpleDateFormat(DateFormatUtils.DATE_FORMAT1);
+        SimpleDateFormat f = new SimpleDateFormat(DateFormatUtil.DATE_FORMAT1);
         if (d != null) {
             if (StringUtils.isNotEmpty(d.toString())) {
                 dString = f.format(d);

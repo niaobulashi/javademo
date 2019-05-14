@@ -1,7 +1,7 @@
 package com.niaobulashi.excel.otherexcel;
 
-import com.niaobulashi.util.DateFormatUtils;
-import com.niaobulashi.util.DateUtils;
+import com.niaobulashi.util.DateFormatUtil;
+import com.niaobulashi.util.DateUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -200,15 +200,15 @@ public class ExcelReadHelper {
 		} else if ("java.util.Date".equals(type)  || "Date".equals(type)) {
 			if (value.length() > 0){//当长度为19(yyyy-MM-dd HH24:mm:ss)或者为14(yyyyMMddHH24mmss)时Date格式转换为yyyyMMddHH24mmss
 				if(value.length() == 19 || value.length() == 14){    
-					oo[0] = DateUtils.string2Date(value, "yyyyMMddHH24mmss");
+					oo[0] = DateUtil.string2Date(value, "yyyyMMddHH24mmss");
 				}
 				else{     //其余全部转换为yyyyMMdd格式
-					oo[0] = DateUtils.string2Date(value, "yyyyMMdd");
+					oo[0] = DateUtil.string2Date(value, "yyyyMMdd");
 				}
 			}
 		} else if ("java.sql.Timestamp".equals(type)) {
 			if (value.length() > 0)
-				oo[0] = DateFormatUtils.formatDate(value, "yyyyMMddHH24mmss");
+				oo[0] = DateFormatUtil.formatDate(value, "yyyyMMddHH24mmss");
 		} else if ("java.lang.Boolean".equals(type)  || "Boolean".equals(type)) {
 			if (value.length() > 0)
 				oo[0] = Boolean.valueOf(value);
