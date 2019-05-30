@@ -45,7 +45,7 @@ public class ExcelImport extends AbstractExcelResolver{
 		return doReadExcel(excelDefinition,titleIndex,excelStream,sheetIndex,multivalidate);
 	}
 	
-	protected ExcelImportResult doReadExcel(ExcelDefinition excelDefinition,int titleIndex,InputStream excelStream,Integer sheetIndex,boolean multivalidate) throws Exception {
+	protected ExcelImportResult doReadExcel(ExcelDefinition excelDefinition, int titleIndex, InputStream excelStream, Integer sheetIndex, boolean multivalidate) throws Exception {
 		Workbook workbook = WorkbookFactory.create(excelStream);
 		ExcelImportResult result = new ExcelImportResult();
 		//读取sheet,sheetIndex参数优先级大于ExcelDefinition配置sheetIndex
@@ -180,7 +180,7 @@ public class ExcelImport extends AbstractExcelResolver{
 	 * @param value
 	 * @param rowNum
 	 */
-	private void validate(FieldValue fieldValue,Object value,int rowNum){
+	private void validate(FieldValue fieldValue, Object value, int rowNum){
 		if(value == null || StringUtils.isBlank(value.toString())){
 			//空校验
 			if(!fieldValue.isNull()){

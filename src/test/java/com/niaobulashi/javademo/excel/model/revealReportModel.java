@@ -8,20 +8,28 @@ package com.niaobulashi.javademo.excel.model;
  */
 public class revealReportModel {
 
+	// id
 	private String id;
-	/** ID */
+
+	// 项目名称
 	private String projectName;
-	/** 创建时间 */
+
+	// 项目简称
 	private String projectShortName;
-	/** 姓名 */
+
+	// 项目来源
 	private String projectSource;
-	/** 年龄 */
-	private Integer revealType;
-	/** 学号 */
+
+	// 披露类型
+	private String revealType;
+
+	// 披露频率
 	private String revealRate;
-	/** 创建人 */
+
+	// 披露日期期限
 	private String revealDueTime;
-	/** 创建人ID */
+
+	// 通知期限
 	private String noticeDueTime;
 
 	public String getProjectName() {
@@ -48,14 +56,6 @@ public class revealReportModel {
 		this.projectSource = projectSource;
 	}
 
-	public Integer getRevealType() {
-		return revealType;
-	}
-
-	public void setRevealType(Integer revealType) {
-		this.revealType = revealType;
-	}
-
 	public String getRevealRate() {
 		return revealRate;
 	}
@@ -80,18 +80,25 @@ public class revealReportModel {
 		this.noticeDueTime = noticeDueTime;
 	}
 
-	@Override
-	public String toString() {
-		return "revealReportModel [id = " + id + ", projectName=" + projectName + ", projectShortName=" + projectShortName + ", projectSource=" + projectSource + ", revealType=" + revealType
-				+ ", revealRate=" + revealRate + ", revealDueTime=" + revealDueTime + ", noticeDueTime=" + noticeDueTime + "]";
-	}
-
-
 	public String getId() {
 		return id;
 	}
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getRevealType() {
+		return revealType;
+	}
+
+	public void setRevealType(String revealType) {
+		this.revealType = revealType;
+	}
+
+	@Override
+	public String toString() {
+		return "revealReportModel [id = " + id + ", projectName=" + projectName + ", projectShortName=" + projectShortName + ", projectSource=" + projectSource + ", revealType=" + revealType
+				+ ", revealRate=" + revealRate + ", revealDueTime=" + revealDueTime + ", noticeDueTime=" + noticeDueTime + "]";
 	}
 }

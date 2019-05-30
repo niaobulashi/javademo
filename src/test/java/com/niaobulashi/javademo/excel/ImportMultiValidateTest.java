@@ -3,60 +3,60 @@ package com.niaobulashi.javademo.excel;
 import com.niaobulashi.excel.ExcelContext;
 import com.niaobulashi.excel.parsing.ExcelError;
 import com.niaobulashi.excel.result.ExcelImportResult;
-import com.niaobulashi.javademo.excel.model.revealReportModel;
+import com.niaobulashi.javademo.excel.model.BookModel;
+import com.niaobulashi.javademo.excel.model.StudentModel;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 
 import java.util.List;
 
 /**
- * Excel导入测试
+ * Excel导入多行校验测试
  * @author lisuo
  *
  */
-public class ImportRevealTest {
+public class ImportMultiValidateTest {
 	
 	// 测试时文件磁盘路径
-	private static String path = "test-export-reveal.xlsx";
+	private static String path =  "test-excel-error.xlsx";
 	// 配置文件路径
-	private static ExcelContext revealContext = new ExcelContext("/template/raveal-config.xml");
+	private static ExcelContext context = new ExcelContext("/template/excel-config.xml");
 	// Excel配置文件中配置的id
-	private static String revealExcelId = "reveal";
-
+	private static String excelId = "student2";
+	
 	/**
 	 * 导入Excel,使用了org.easy.excel.test.ExportTest.testExportCustomHeader()方法生成的Excel
 	 * @throws Exception
 	 */
 	@Test
-	public void testRevealImport()throws Exception {
-		ClassPathResource resource = new ClassPathResource(path);
+	public void testImport()throws Exception {
+		Resource resource = new ClassPathResource(path);
 		//第二个参数需要注意,它是指标题索引的位置,可能你的前几行并不是标题,而是其他信息,
 		//比如数据批次号之类的,关于如何转换成javaBean,具体参考配置信息描述
-		//multivalidate:true时，多行导入校验
-		ExcelImportResult result = revealContext.readExcel(revealExcelId, 3, resource.getInputStream(), true);
+		ExcelImportResult result = context.readExcel(excelId, 2, resource.getInputStream(),true);
+		System.out.println(result.getHeader());
+		List<StudentModel> stus = result.getListBean();
+		for(StudentModel stu:stus){
+			System.out.println(stu);
+			BookModel book = stu.getBook();
+			System.out.println(book);
+			if(book!=null){
+				System.out.println(book.getAuthor());
+			}
+		}
+		//通过导入结果集的hasErrors方法判断
 		if(result.hasErrors()){
 			System.out.println("导入包含错误，下面是错误信息：");
 			for (ExcelError err:result.getErrors()) {
 				System.out.println(err.getErrorMsg());
 			}
 		}
-//		System.out.println(result.getHeader());
-		List<revealReportModel> stus = result.getListBean();
-		for(revealReportModel stu:stus){
-			System.out.println(stu);
-		}
-
 		resource.getInputStream().close();
 		//这种方式和上面的没有任何区别,底层方法默认标题索引为0
 		//context.readExcel(excelId, fis);
 	}
-
-
-	/**
-	 * 两个字段相比较
-	 */
-	@Test
-	public void Test() {
-
-	}
+	
+	
+		
 }

@@ -11,10 +11,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.IndexedColors;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.util.Assert;
-import org.springframework.util.ResourceUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -22,9 +19,6 @@ import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -50,7 +44,7 @@ public class XMLExcelDefinitionReader implements ExcelDefinitionReader {
 	 * @param locations xml配置路径
 	 * @throws Exception
 	 */
-	@SuppressWarnings("resource")
+	@SuppressWarnings("resources")
 	public XMLExcelDefinitionReader(String locations) throws Exception {
 		if(StringUtils.isBlank(locations)){
 			throw new IllegalArgumentException("locations 不能为空");
@@ -58,16 +52,9 @@ public class XMLExcelDefinitionReader implements ExcelDefinitionReader {
 		this.locations = locations;
 		registry = new HashMap<String, ExcelDefinition>();
 		String[] locationArr = StringUtils.split(locations, ",");
-		for (String location:locationArr) {
-			InputStream fis = null;
-			try{
-				File file = ResourceUtils.getFile(location);
-				fis = new FileInputStream(file);
-			}catch(FileNotFoundException e){
-				//如果没有找到文件,默认尝试从类路径加载
-				Resource resource = new ClassPathResource(location);
-				fis = resource.getInputStream();
-			}
+		for (String location : locationArr) {
+			// 使用文件流的方式读取文件
+			InputStream fis = this.getClass().getResourceAsStream(location);
 			loadExcelDefinitions(fis);
 		}
 		

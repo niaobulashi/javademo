@@ -27,7 +27,7 @@ public abstract class ExcelUtil {
 	 * @return List<List<Object>> 
 	 * @throws Exception
 	 */
-	public static List<List<Object>> readExcel(InputStream excelStream,int sheetIndex)throws Exception {
+	public static List<List<Object>> readExcel(InputStream excelStream, int sheetIndex)throws Exception {
 		List<List<Object>> datas = new ArrayList<List<Object>>();
 		Workbook workbook = WorkbookFactory.create(excelStream);
 		//只读取第一个sheet

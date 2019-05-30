@@ -11,7 +11,7 @@ public class ExcelError {
 	/** 错误消息 */
 	private String errorMsg;
 	
-	public ExcelError(int row,String errorMsg) {
+	public ExcelError(int row, String errorMsg) {
 		this.row = row;
 		this.errorMsg = errorMsg;
 	}

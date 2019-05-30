@@ -4,11 +4,15 @@ package com.niaobulashi.excel;
 import com.niaobulashi.excel.config.ExcelDefinition;
 import com.niaobulashi.excel.config.FieldValue;
 import com.niaobulashi.excel.exception.ExcelException;
+import com.niaobulashi.excel.parsing.ExcelExport;
+import com.niaobulashi.excel.parsing.ExcelHeader;
 import com.niaobulashi.excel.parsing.ExcelImport;
+import com.niaobulashi.excel.result.ExcelExportResult;
 import com.niaobulashi.excel.result.ExcelImportResult;
 import com.niaobulashi.excel.util.ReflectUtil;
 import com.niaobulashi.excel.xml.XMLExcelDefinitionReader;
 import org.apache.commons.collections.MapUtils;
+import org.apache.poi.ss.usermodel.Workbook;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -26,8 +30,10 @@ public class ExcelContext  {
 	private ExcelDefinitionReader definitionReader;
 	
 	/** 用于缓存Excel配置 */
-	private Map<String,List<FieldValue>> fieldValueMap = new HashMap<String, List<FieldValue>>();
+	private Map<String, List<FieldValue>> fieldValueMap = new HashMap<String, List<FieldValue>>();
 	
+	/**导出*/
+	private ExcelExport excelExport;
 	/**导入*/
 	private ExcelImport excelImport;
 	
@@ -38,6 +44,7 @@ public class ExcelContext  {
 		try {
 			//默认使用XMLExcelDefinitionReader
 			definitionReader = new XMLExcelDefinitionReader(locations);
+			excelExport = new ExcelExport(definitionReader);
 			excelImport = new ExcelImport(definitionReader);
 		} catch (ExcelException e) {
 			throw e;
@@ -58,6 +65,7 @@ public class ExcelContext  {
 				throw new ExcelException("definitionReader Registry 不能为空");
 			}
 			this.definitionReader = definitionReader;
+			excelExport = new ExcelExport(definitionReader);
 			excelImport = new ExcelImport(definitionReader);
 		}catch(ExcelException e){
 			throw e;
@@ -66,13 +74,99 @@ public class ExcelContext  {
 		}
 		
 	}
-
+	
+	/**
+	 * 创建Excel
+	 * @param id 配置ID
+	 * @param beans 配置class对应的List
+	 * @return Workbook
+	 * @throws Exception
+	 */
+	public Workbook createExcel(String id, List<?> beans) throws Exception {
+		return createExcel(id, beans, null, null);
+	}
+	
+	/**
+	 * 创建Excel部分信息
+	 * @param id 配置ID
+	 * @param beans 配置class对应的List
+	 * @return Workbook
+	 * @throws Exception
+	 */
+	public ExcelExportResult createExcelForPart(String id, List<?> beans) throws Exception {
+		return createExcelForPart(id, beans, null, null);
+	}
+	
+	/**
+	 * 创建Excel
+	 * @param id 配置ID
+	 * @param beans 配置class对应的List
+	 * @param header 导出之前,在标题前面做出一些额外的操作，比如增加文档描述等,可以为null
+	 * @param flag 为true时，表示设置了密码，默认密码为niaobulashi
+	 * @return Workbook
+	 * @throws Exception
+	 */
+	public Workbook createExcel(String id, List<?> beans, ExcelHeader header, Boolean flag) throws Exception {
+		return createExcel(id, beans, header, null, flag);
+	}
+	
+	/**
+	 * 创建Excel部分信息
+	 * @param id 配置ID
+	 * @param beans 配置class对应的List
+	 * @param header 导出之前,在标题前面做出一些额外的操作，比如增加文档描述等,可以为null
+	 * @return Workbook
+	 * @throws Exception
+	 */
+	public ExcelExportResult createExcelForPart(String id, List<?> beans, ExcelHeader header) throws Exception {
+		return createExcelForPart(id, beans, header, null);
+	}
+	
+	/**
+	 * 创建Excel
+	 * @param id 配置ID
+	 * @param beans 配置class对应的List
+	 * @param header 导出之前,在标题前面做出一些额外的操作,比如增加文档描述等,可以为null
+	 * @param fields 指定Excel导出的字段(bean对应的字段名称),可以为null
+	 * @param flag 是否设置保护工作簿的保护密码
+	 * @return Workbook
+	 * @throws Exception
+	 */
+	public Workbook createExcel(String id, List<?> beans, ExcelHeader header, List<String> fields, Boolean flag) throws Exception {
+		return excelExport.createExcel(id, beans, header, fields, flag).build();
+	}
+	
+	/**
+	 * 创建Excel部分信息
+	 * @param id 配置ID
+	 * @param beans 配置class对应的List
+	 * @param header 导出之前,在标题前面做出一些额外的操作,比如增加文档描述等,可以为null
+	 * @param fields 指定Excel导出的字段(bean对应的字段名称),可以为null
+	 * @return Workbook
+	 * @throws Exception
+	 */
+	public ExcelExportResult createExcelForPart(String id, List<?> beans, ExcelHeader header, List<String> fields) throws Exception {
+		return excelExport.createExcel(id, beans,header,fields, null);
+	}
+	
+	/**
+	 * 创建Excel,模板信息
+	 * @param id	 ExcelXML配置Bean的ID
+	 * @param header Excel头信息(在标题之前)
+	 * @param fields 指定导出的字段
+	 * @return
+	 * @throws Exception
+	 */
+	public Workbook createExcelTemplate(String id, ExcelHeader header, List<String> fields) throws Exception {
+		return excelExport.createExcelTemplate(id, header,fields);
+	}
+	
 	/***
 	 * 读取Excel信息
 	 * @param id 配置ID
 	 * @param excelStream Excel文件流
 	 * @return ExcelImportResult
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public ExcelImportResult readExcel(String id, InputStream excelStream) throws Exception {
 		return excelImport.readExcel(id,0, excelStream,null,false);
@@ -84,9 +178,9 @@ public class ExcelContext  {
 	 * @param excelStream Excel文件流
 	 * @param sheetIndex Sheet索引位
 	 * @return ExcelImportResult
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	public ExcelImportResult readExcel(String id, InputStream excelStream,int sheetIndex) throws Exception {
+	public ExcelImportResult readExcel(String id, InputStream excelStream, int sheetIndex) throws Exception {
 		return excelImport.readExcel(id,0, excelStream,sheetIndex,false);
 	}
 	
@@ -96,9 +190,9 @@ public class ExcelContext  {
 	 * @param titleIndex 标题索引,从0开始
 	 * @param excelStream Excel文件流
 	 * @return ExcelImportResult
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	public ExcelImportResult readExcel(String id,int titleIndex, InputStream excelStream) throws Exception {
+	public ExcelImportResult readExcel(String id, int titleIndex, InputStream excelStream) throws Exception {
 		return excelImport.readExcel(id,titleIndex, excelStream,null,false);
 	}
 	
@@ -109,9 +203,9 @@ public class ExcelContext  {
 	 * @param excelStream Excel文件流
 	 * @param multivalidate 是否逐条校验，默认单行出错立即抛出ExcelException，为true时为批量校验,可通过ExcelImportResult.hasErrors,和getErrors获取具体错误信息
 	 * @return ExcelImportResult
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	public ExcelImportResult readExcel(String id,int titleIndex, InputStream excelStream,boolean multivalidate) throws Exception {
+	public ExcelImportResult readExcel(String id, int titleIndex, InputStream excelStream, boolean multivalidate) throws Exception {
 		return excelImport.readExcel(id,titleIndex, excelStream,null,multivalidate);
 	}
 	
@@ -122,9 +216,9 @@ public class ExcelContext  {
 	 * @param excelStream Excel文件流
 	 * @param sheetIndex Sheet索引位
 	 * @return ExcelImportResult
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	public ExcelImportResult readExcel(String id,int titleIndex, InputStream excelStream,int sheetIndex) throws Exception {
+	public ExcelImportResult readExcel(String id, int titleIndex, InputStream excelStream, int sheetIndex) throws Exception {
 		return excelImport.readExcel(id,titleIndex, excelStream,sheetIndex,false);
 	}
 	
@@ -136,9 +230,9 @@ public class ExcelContext  {
 	 * @param sheetIndex Sheet索引位
 	 * @param multivalidate 是否逐条校验，默认单行出错立即抛出ExcelException，为true时为批量校验,可通过ExcelImportResult.hasErrors,和getErrors获取具体错误信息
 	 * @return ExcelImportResult
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	public ExcelImportResult readExcel(String id,int titleIndex, InputStream excelStream,int sheetIndex,boolean multivalidate) throws Exception {
+	public ExcelImportResult readExcel(String id, int titleIndex, InputStream excelStream, int sheetIndex, boolean multivalidate) throws Exception {
 		return excelImport.readExcel(id,titleIndex, excelStream,sheetIndex,multivalidate);
 	}
 	

@@ -90,7 +90,7 @@ public abstract class AbstractExcelResolver implements CellValueConverter{
 	
 	//默认实现
 	@Override
-	public Object convert(Object bean,Object value, FieldValue fieldValue, Type type,int rowNum) throws Exception {
+	public Object convert(Object bean, Object value, FieldValue fieldValue, Type type, int rowNum) throws Exception {
 		if(value !=null){
 			//解析器实现，读取数据
 			String convName = fieldValue.getCellValueConverterName();
@@ -101,7 +101,7 @@ public abstract class AbstractExcelResolver implements CellValueConverter{
 				String format = fieldValue.getFormat();
 				DecimalFormat decimalFormat = fieldValue.getDecimalFormat();
 				if (StringUtils.isNotBlank(pattern)) {
-					String [] patterns = StringUtils.split(pattern, ",");
+					String[] patterns = StringUtils.split(pattern, ",");
 					if (Type.EXPORT == type) {
 						//导出使用第一个pattern
 						return DateFormatUtils.format((Date) value, patterns[0]);
@@ -180,7 +180,7 @@ public abstract class AbstractExcelResolver implements CellValueConverter{
 	 * @param rowNum
 	 * @return
 	 */
-	protected String getErrorMsg(FieldValue fieldValue,String errMsg,int rowNum){
+	protected String getErrorMsg(FieldValue fieldValue, String errMsg, int rowNum){
 		StringBuilder err = new StringBuilder();
 		err.append("第[").append(rowNum).append("行],[")
 		.append(fieldValue.getTitle()).append("]").append(errMsg);

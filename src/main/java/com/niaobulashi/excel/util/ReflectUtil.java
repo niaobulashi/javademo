@@ -34,7 +34,7 @@ public abstract class ReflectUtil {
 	 * @return 常量对应的值
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> T getConstValue(Class<?> clazz,String constName){
+	public static <T> T getConstValue(Class<?> clazz, String constName){
 		Field field = ReflectUtil.getField(clazz, constName);
 		if(field!=null){
 			field.setAccessible(true);
@@ -76,13 +76,13 @@ public abstract class ReflectUtil {
 	 */
 	public static List<Field> getFields(Class<?> clazz){
 		List<Field> fieldResult = new ArrayList<Field>();
-		while(clazz!=Object.class){
+		while(clazz!= Object.class){
 			try {
 				Field[] fields = clazz.getDeclaredFields();
 				for (Field field:fields) {
 					int modifiers = field.getModifiers();
 					//过滤static或final字段
-					if(Modifier.isStatic(modifiers)||Modifier.isFinal(modifiers)){
+					if(Modifier.isStatic(modifiers)|| Modifier.isFinal(modifiers)){
 						continue;
 					}
 					fieldResult.add(field);
@@ -120,7 +120,7 @@ public abstract class ReflectUtil {
 		if(!(genType instanceof ParameterizedType)){
 			return Object.class;
 		}
-		Type [] params = ((ParameterizedType)genType).getActualTypeArguments();
+		Type[] params = ((ParameterizedType)genType).getActualTypeArguments();
 		if(index >= params.length || index < 0){
 			return Object.class;
 		}
@@ -159,7 +159,7 @@ public abstract class ReflectUtil {
 				}
 			}
 			Set<Entry<Object, Object>> entrySet = sourceMap.entrySet();
-			for(Entry<Object, Object> e:entrySet){
+			for(Map.Entry<Object, Object> e:entrySet){
 				if(ignorPropsSet.isEmpty()){
 					setProperty(target, e.getKey().toString(), e.getValue());
 				}else if(!ignorPropsSet.contains(e.getKey())){
@@ -210,8 +210,8 @@ public abstract class ReflectUtil {
 	 * @param propNames 需要放到map中的属性名称
 	 * @return
 	 */
-	public static Map<String,Object> beanToMap(Object bean, String...propNames) {
-		Map<String,Object> rtn = new HashMap<String,Object>();
+	public static Map<String, Object> beanToMap(Object bean, String...propNames) {
+		Map<String, Object> rtn = new HashMap<String, Object>();
 		if(ArrayUtils.isEmpty(propNames)){
 			List<String> fieldNames = getFieldNames(bean.getClass());
 			for (String fieldName: fieldNames) {
@@ -233,7 +233,7 @@ public abstract class ReflectUtil {
 	 * @param clazz
 	 * @return 
 	 */
-	public static <T> T mapToBean(Map<String,?> map,Class<T> clazz){
+	public static <T> T mapToBean(Map<String,?> map, Class<T> clazz){
 		T bean = newInstance(clazz);
 		for(Entry<String, ?> me:map.entrySet()){
 			setProperty(bean, me.getKey(), me.getValue(), true);
@@ -297,7 +297,7 @@ public abstract class ReflectUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static Field getField(Class<?> clazz,String name){
+	public static Field getField(Class<?> clazz, String name){
 		return ReflectionUtils.findField(clazz, name);
 		
 	}
@@ -309,7 +309,7 @@ public abstract class ReflectUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static Class<?> getFieldType(Class<?> clazz,String name) {
+	public static Class<?> getFieldType(Class<?> clazz, String name) {
 		Field field = getField(clazz, name);
 		if(field!=null){
 			return field.getType();
@@ -438,18 +438,18 @@ public abstract class ReflectUtil {
 	 * @param clazzs 
 	 * @return 相同的父类Class
 	 */
-	public static Class<?> getEqSuperClass(Class<?> ...clazzs){
+	public static Class<?> getEqSuperClass(Class<?>...clazzs){
 		Validate.notEmpty(clazzs);
 		List<List<Class<?>>> container = new ArrayList<List<Class<?>>>(clazzs.length);
-		for(Class<?>clazz :clazzs){
-			if(clazz==Object.class)return null;
+		for(Class<?> clazz :clazzs){
+			if(clazz== Object.class)return null;
 			List<Class<?>> superClazz = new ArrayList<Class<?>>(5);
-			for(clazz=clazz.getSuperclass();clazz!=Object.class;clazz=clazz.getSuperclass()){
+			for(clazz=clazz.getSuperclass(); clazz!= Object.class; clazz=clazz.getSuperclass()){
 				superClazz.add(clazz);
 			}
 			container.add(superClazz);
 		}
-		List<Class<?>> result = new ArrayList<Class<?>>(5);  
+		List<Class<?>> result = new ArrayList<Class<?>>(5);
 		Iterator<List<Class<?>>> it = container.iterator();
 		int len =0;
 		while(it.hasNext()){
