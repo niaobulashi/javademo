@@ -40,21 +40,27 @@ public class AddTwoNum {
      * @return 相加结果
      */
     public static ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        // 定义预设链表
         ListNode pre = new ListNode(0);
+        // 当前链表
         ListNode cur = pre;
+        // 进位数，默认为0
         int carry = 0;
+        // 知道l1,l2都为空才结束
         while (l1 != null || l2 != null) {
-            int x = l1 == null ? 0 : l1.val;
-            int y = l2 == null ? 0 : l2.val;
+            int x = l1 != null ? l1.val : 0;
+            int y = l2 != null ? l2.val : 0;
+            // 底位数开始相加，下一次相加将上一次的进位数也加起来
             int sum = x + y + carry;
-            // 获取进位
+            // 获取进位数
             carry = sum / 10;
             // 获取余数
             sum = sum % 10;
-            // 将得到的数据
+            // 将余数设置为当前的一个节点值
             cur.next = new ListNode(sum);
             // 向后移动
             cur = cur.next;
+            // l1,l2也需要向后移动
             if (l1 != null) {
                 l1 = l1.next;
             }
@@ -62,6 +68,7 @@ public class AddTwoNum {
                 l2 = l2.next;
             }
         }
+        // 如果最后还有进位数，则需要最后在进一位，上1
         if (carry == 1) {
             cur.next = new ListNode(carry);
         }
