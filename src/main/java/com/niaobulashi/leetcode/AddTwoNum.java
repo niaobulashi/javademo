@@ -29,8 +29,11 @@ public class AddTwoNum {
         l2.next.next.next.next = new ListNode(3);
         getNode(l1);
         getNode(l2);
-    
-        getNode(addTwoNumbers(l1,l2));
+        
+        // 官方解法
+        //getNode(addTwoNumbers(l1,l2));
+        // 递归解法
+        getNode(diguiAddTwoNumber(l1, l2));
     }
     
     /**
@@ -89,6 +92,25 @@ public class AddTwoNum {
             System.out.println("NULL");
             return null;
         }
+    }
+    
+    
+    /**
+     * 1.因为两个数字相加会产生进位，所以使用i来保存进位。
+     * 2.则当前位的值为(l1.val + l2.val + i) % 10
+     * 3.则进位值为(l1.val + l2.val + i) / 10
+     * 4.建立新node，然后将进位传入下一层。
+     */
+    public static ListNode diguiAddTwoNumber(ListNode l1, ListNode l2) {
+        return dfs(l1, l2, 0);
+    }
+    
+    public static ListNode dfs(ListNode l1, ListNode l2, int i) {
+        if (l1 == null && l2 == null && i == 0) {return null;}
+        int sum = (l1 != null ? l1.val : 0) + (l2 != null ? l2.val : 0) + i;
+        ListNode node = new ListNode(sum % 10);
+        node.next = dfs(l1 != null ? l1.next : null, l2 != null ? l2.next : null, sum / 10);
+        return node;
     }
 }
 
