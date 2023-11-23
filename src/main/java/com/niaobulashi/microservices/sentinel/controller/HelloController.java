@@ -23,9 +23,9 @@ import java.util.List;
  */
 @RestController
 @Slf4j
+@RequestMapping("/user")
 public class HelloController {
     private static final String RESOURCE_NAME = "hello";
-
     @RequestMapping(value = "/hello")
     public String hello() {
         Entry entry = null;
